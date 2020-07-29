@@ -14,8 +14,7 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
   -->
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -26,35 +25,66 @@
         android:id="@+id/albumArt"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scaleType="centerCrop"
         android:contentDescription="@string/album_art_alt"
-        app:srcCompat="@android:color/transparent"/>
+        android:scaleType="centerCrop"
+        app:srcCompat="@android:color/transparent"
+        tools:layout_editor_absoluteX="-16dp"
+        tools:layout_editor_absoluteY="26dp" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/divider"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_end="143dp" />
+        app:layout_constraintGuide_end="142dp" />
 
     <View
         android:id="@+id/view"
-        android:layout_width="match_parent"
-        android:layout_height="96dp"
-        android:layout_marginTop="-24dp"
+        android:layout_width="0dp"
+        android:layout_height="147dp"
         android:background="@drawable/media_overlay_background"
-        app:layout_constraintBottom_toBottomOf="@+id/albumbArt"
-        app:layout_constraintTop_toBottomOf="@id/divider" />
+        app:layout_constraintBottom_toBottomOf="@+id/albumArt"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/divider"
+        app:layout_constraintVertical_bias="1.0" />
 
     <ImageButton
         android:id="@+id/repeat_mode_button"
         android:layout_width="@dimen/exo_media_button_width"
         android:layout_height="@dimen/exo_media_button_height"
+        android:layout_marginStart="16dp"
         android:background="?attr/selectableItemBackground"
         android:scaleType="centerInside"
-        app:layout_constraintBottom_toTopOf="@+id/media_button"
-        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/guideline"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/guideline"
+        app:layout_constraintVertical_bias="0.307"
         app:srcCompat="@drawable/ic_repeat_none_black_24dp"
+        tools:ignore="ContentDescription" />
+
+    <ImageButton
+        android:id="@+id/next"
+        android:layout_width="@dimen/exo_media_button_width"
+        android:layout_height="@dimen/exo_media_button_height"
+        android:background="?attr/selectableItemBackground"
+        android:scaleType="centerInside"
+        app:layout_constraintBottom_toTopOf="@+id/guideline"
+        app:layout_constraintStart_toEndOf="@+id/media_button"
+        app:layout_constraintTop_toTopOf="@+id/guideline"
+        app:layout_constraintVertical_bias="0.48"
+        app:srcCompat="@drawable/ic_skip_next_black_24dp"
+        tools:ignore="ContentDescription" />
+
+    <ImageButton
+        android:id="@+id/previous"
+        android:layout_width="@dimen/exo_media_button_width"
+        android:layout_height="@dimen/exo_media_button_height"
+        android:background="?attr/selectableItemBackground"
+        android:scaleType="centerInside"
+        app:layout_constraintBottom_toTopOf="@+id/guideline"
+        app:layout_constraintEnd_toStartOf="@+id/media_button"
+        app:layout_constraintTop_toTopOf="@+id/guideline"
+        app:srcCompat="@drawable/ic_skip_previous_black_24dp"
         tools:ignore="ContentDescription" />
 
     <ImageButton
@@ -63,74 +93,97 @@
         android:layout_height="@dimen/exo_media_button_height"
         android:background="?attr/selectableItemBackground"
         android:scaleType="centerInside"
+        app:layout_constraintBottom_toTopOf="@+id/guideline"
+        app:layout_constraintEnd_toStartOf="@+id/guideline2"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/divider"
+        app:layout_constraintStart_toStartOf="@+id/guideline2"
+        app:layout_constraintTop_toTopOf="@+id/guideline"
         app:srcCompat="@drawable/ic_play_arrow_black_24dp"
         tools:ignore="ContentDescription" />
 
     <TextView
         android:id="@+id/title"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="108dp"
+        android:layout_marginTop="56dp"
         android:ellipsize="end"
         android:maxLines="1"
+        android:textColor="@color/mediaTitle"
         android:textAppearance="@style/TextAppearance.Uamp.Title"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintEnd_toStartOf="@+id/guideline2"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintLeft_toRightOf="@id/media_button"
         app:layout_constraintRight_toLeftOf="@id/position"
+        app:layout_constraintStart_toStartOf="@+id/guideline2"
         app:layout_constraintTop_toTopOf="@+id/albumArt"
         tools:text="Song Title" />
 
     <TextView
         android:id="@+id/subtitle"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/text_margin"
-        android:layout_marginEnd="@dimen/text_margin"
+        android:layout_width="wrap_content"
+        android:layout_height="23dp"
+        android:layout_marginTop="8dp"
         android:ellipsize="end"
+        android:textColor="@color/mediaTitle"
         android:maxLines="1"
         android:textAppearance="@style/TextAppearance.Uamp.Subtitle"
+        app:layout_constraintEnd_toStartOf="@+id/guideline2"
+        app:layout_constraintHorizontal_bias="0.508"
+        app:layout_constraintStart_toStartOf="@+id/guideline2"
         app:layout_constraintTop_toBottomOf="@+id/title"
-        app:layout_constraintLeft_toRightOf="@id/media_button"
-        app:layout_constraintRight_toLeftOf="@id/position"
         tools:text="Artist" />
 
     <TextView
         android:id="@+id/position"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginStart="@dimen/text_margin"
-        android:layout_marginEnd="@dimen/text_margin"
+        android:layout_width="wrap_content"
+        android:layout_height="29dp"
+        android:layout_marginStart="28dp"
+        android:layout_marginTop="16dp"
         android:ellipsize="end"
         android:maxLines="1"
         android:textAppearance="@style/TextAppearance.Uamp.Title"
-        app:layout_constraintTop_toBottomOf="@id/divider"
-        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/divider"
         tools:text="0:00" />
 
     <TextView
         android:id="@+id/duration"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/text_margin"
-        android:layout_marginEnd="@dimen/text_margin"
+        android:layout_width="wrap_content"
+        android:layout_height="28dp"
+        android:layout_marginEnd="24dp"
         android:ellipsize="end"
         android:maxLines="1"
-        android:textAppearance="@style/TextAppearance.Uamp.Subtitle"
-        app:layout_constraintTop_toBottomOf="@id/position"
-        app:layout_constraintRight_toRightOf="parent"
+        android:textAppearance="@style/TextAppearance.Uamp.Title"
+        app:layout_constraintBottom_toBottomOf="@+id/position"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/position"
+        app:layout_constraintVertical_bias="0.0"
         tools:text="0:00" />
 
     <SeekBar
         android:id="@+id/seekBar"
-        style="@style/Widget.AppCompat.SeekBar.Discrete"
-        android:layout_width="100dp"
-        android:layout_height="wrap_content"
-        android:max="10"
+        android:layout_width="0dp"
+        android:layout_height="33dp"
         android:progress="100"
-        tools:layout_editor_absoluteX="159dp"
-        tools:layout_editor_absoluteY="606dp" />
+        style="@style/Widget.AppCompat.SeekBar.Discrete"
+        app:layout_constraintBottom_toBottomOf="@+id/position"
+        app:layout_constraintEnd_toStartOf="@+id/duration"
+        app:layout_constraintStart_toEndOf="@+id/position"
+        app:layout_constraintTop_toTopOf="@+id/position"
+        tools:progress="15"/>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_end="56dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.50121653" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

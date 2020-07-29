@@ -59,6 +59,7 @@ class MediaSessionConnection(context: Context, serviceComponent: ComponentName) 
 
     val playbackState = MutableLiveData<PlaybackStateCompat>()
         .apply { postValue(EMPTY_PLAYBACK_STATE) }
+
     val nowPlaying = MutableLiveData<MediaMetadataCompat>()
         .apply { postValue(NOTHING_PLAYING) }
     val repeatMode = MutableLiveData<Int>()
@@ -148,6 +149,8 @@ class MediaSessionConnection(context: Context, serviceComponent: ComponentName) 
         override fun onRepeatModeChanged(repeatMod: Int) {
             repeatMode.postValue(repeatMod)
         }
+
+
 
         override fun onSessionEvent(event: String?, extras: Bundle?) {
             super.onSessionEvent(event, extras)

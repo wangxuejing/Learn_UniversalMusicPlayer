@@ -166,6 +166,10 @@ class MainActivityViewModel(
         }
     }
 
+    fun seekTo(progress: Long?) {
+         mediaSessionConnection.transportControls.seekTo(progress?:0)
+    }
+
     class Factory(
         private val mediaSessionConnection: MediaSessionConnection
     ) : ViewModelProvider.NewInstanceFactory() {

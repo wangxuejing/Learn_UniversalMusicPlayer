@@ -17,22 +17,26 @@
 package com.example.android.uamp.fragments
 
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.ImageView
+import android.widget.SeekBar
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.bumptech.glide.Glide
 import com.example.android.uamp.R
+import com.example.android.uamp.media.extensions.duration
 import com.example.android.uamp.utils.InjectorUtils
 import com.example.android.uamp.viewmodels.MainActivityViewModel
 import com.example.android.uamp.viewmodels.NowPlayingFragmentViewModel
 import com.example.android.uamp.viewmodels.NowPlayingFragmentViewModel.NowPlayingMetadata
+import kotlinx.android.synthetic.main.fragment_nowplaying.*
 
 /**
  * A fragment representing the current media item being played.
@@ -41,7 +45,7 @@ class NowPlayingFragment : Fragment() {
     private lateinit var mainActivityViewModel: MainActivityViewModel
     private lateinit var nowPlayingViewModel: NowPlayingFragmentViewModel
     private lateinit var positionTextView: TextView
-
+    private  lateinit var  mSeekBar :SeekBar
     companion object {
         fun newInstance() = NowPlayingFragment()
     }
@@ -71,25 +75,60 @@ class NowPlayingFragment : Fragment() {
         nowPlayingViewModel.mediaButtonRes.observe(this,
                 Observer { res -> view.findViewById<ImageView>(R.id.media_button).setImageResource(res) })
         nowPlayingViewModel.mediaPosition.observe(this,
-                Observer { pos -> positionTextView.text =
-                        NowPlayingMetadata.timestampToMSS(context, pos) })
+                Observer { pos ->
+                    positionTextView.text =
+                            NowPlayingMetadata.timestampToMSS(context, pos)
+                     updateProgress(pos)
+                })
         nowPlayingViewModel.repeatButtonRes.observe(this,
                 Observer { res -> view.findViewById<ImageView>(R.id.repeat_mode_button).setImageResource(res) })
 
+
         // Setup UI handlers for buttons
         view.findViewById<ImageButton>(R.id.media_button).setOnClickListener {
-            nowPlayingViewModel.mediaMetadata.value?.let { mainActivityViewModel.playMediaId(it.id) } }
-
-        view.findViewById<ImageButton>(R.id.repeat_mode_button).setOnClickListener {
-             nowPlayingViewModel.repeatMode.value?.let { mainActivityViewModel.setRepeatMode((it+1)%3) }
+            nowPlayingViewModel.mediaMetadata.value?.let { mainActivityViewModel.playMediaId(it.id) }
         }
 
+        view.findViewById<ImageButton>(R.id.repeat_mode_button).setOnClickListener {
+            nowPlayingViewModel.repeatMode.value?.let { mainActivityViewModel.setRepeatMode((it + 1) % 3) }
+        }
+
+        mSeekBar = view.findViewById<SeekBar>(R.id.seekBar)
+                .apply {
+                    setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+                        override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
+                        }
+
+                        override fun onStartTrackingTouch(seekBar: SeekBar?) {
+                        }
+
+                        override fun onStopTrackingTouch(seekBar: SeekBar?) {
+                            var duration = nowPlayingViewModel.mediaDuration.value?:0
+                            if (duration<=0){return}
+                            val position = seekBar?.progress?.times(duration/100)?:0
+                            mainActivityViewModel.seekTo(position)
+                        }
+
+                    })
+                }
 
         // Initialize playback duration and position to zero
         view.findViewById<TextView>(R.id.duration).text =
                 NowPlayingMetadata.timestampToMSS(context, 0L)
+
         positionTextView = view.findViewById<TextView>(R.id.position)
                 .apply { text = NowPlayingMetadata.timestampToMSS(context, 0L) }
+    }
+
+    private fun updateProgress(pos: Long) {
+        var duration = nowPlayingViewModel.mediaDuration.value?:1
+        if (duration<=0){return}
+        val progress = (pos.times(100)/ duration).toInt()
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            mSeekBar.setProgress(progress ,true)
+        }else{
+            mSeekBar.progress = progress
+        }
     }
 
     /**
@@ -109,3 +148,5 @@ class NowPlayingFragment : Fragment() {
         view.findViewById<TextView>(R.id.duration).text = metadata.duration
     }
 }
+
+

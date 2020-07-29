@@ -88,6 +88,10 @@ class NowPlayingFragmentViewModel(
         postValue(com.example.android.uamp.R.drawable.ic_album_black_24dp)
     }
 
+
+    val mediaDuration = MutableLiveData<Long>().apply {
+        postValue(0L)
+    }
     val repeatButtonRes = MutableLiveData<Int>().apply {
         postValue(com.example.android.uamp.R.drawable.ic_album_black_24dp)
     }
@@ -132,7 +136,7 @@ class NowPlayingFragmentViewModel(
      * [MediaSessionConnection.nowPlaying] changes based on the item that's being played,
      * which can also change the [MediaItemData.playbackRes]s in the list.
      */
-    private val mediaSessionConnection = mediaSessionConnection.also {
+     val mediaSessionConnection = mediaSessionConnection.also {
         it.playbackState.observeForever(playbackStateObserver)
         it.nowPlaying.observeForever(mediaMetadataObserver)
         it.repeatMode.observeForever { mode ->
@@ -140,6 +144,7 @@ class NowPlayingFragmentViewModel(
         }
         checkPlaybackPosition()
     }
+
 
     private fun updateRepeatModeButton(mode: Int?) {
 
@@ -201,7 +206,7 @@ class NowPlayingFragmentViewModel(
             )
             this.mediaMetadata.postValue(nowPlayingMetadata)
         }
-
+        mediaDuration.postValue(mediaMetadata.duration)
         // Update the media button resource ID
         mediaButtonRes.postValue(
             when (playbackState.isPlaying) {
@@ -224,4 +229,4 @@ class NowPlayingFragmentViewModel(
 }
 
 private const val TAG = "NowPlayingFragmentVM"
-private const val POSITION_UPDATE_INTERVAL_MILLIS = 100L
+private const val POSITION_UPDATE_INTERVAL_MILLIS = 300L
