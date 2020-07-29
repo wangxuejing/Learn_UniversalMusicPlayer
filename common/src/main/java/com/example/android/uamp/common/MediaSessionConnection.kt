@@ -61,6 +61,8 @@ class MediaSessionConnection(context: Context, serviceComponent: ComponentName) 
         .apply { postValue(EMPTY_PLAYBACK_STATE) }
     val nowPlaying = MutableLiveData<MediaMetadataCompat>()
         .apply { postValue(NOTHING_PLAYING) }
+    val repeatMode = MutableLiveData<Int>()
+            .apply { postValue(PlaybackStateCompat.REPEAT_MODE_NONE) }
 
     val transportControls: MediaControllerCompat.TransportControls
         get() = mediaController.transportControls
@@ -111,6 +113,7 @@ class MediaSessionConnection(context: Context, serviceComponent: ComponentName) 
                 registerCallback(MediaControllerCallback())
             }
 
+
             isConnected.postValue(true)
         }
 
@@ -140,6 +143,10 @@ class MediaSessionConnection(context: Context, serviceComponent: ComponentName) 
         }
 
         override fun onQueueChanged(queue: MutableList<MediaSessionCompat.QueueItem>?) {
+        }
+
+        override fun onRepeatModeChanged(repeatMod: Int) {
+            repeatMode.postValue(repeatMod)
         }
 
         override fun onSessionEvent(event: String?, extras: Bundle?) {

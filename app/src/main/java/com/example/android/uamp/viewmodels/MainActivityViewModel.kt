@@ -77,9 +77,9 @@ class MainActivityViewModel(
      * browse to it, otherwise play it.
      */
     fun mediaItemClicked(clickedItem: MediaItemData) {
-        if (clickedItem.browsable) {
+        if (clickedItem.browsable) {//點擊的item可以繼續展開
             browseToItem(clickedItem)
-        } else {
+        } else {//點擊的item就是一個可播放的媒體資源
             playMedia(clickedItem, pauseAllowed = false)
             showFragment(NowPlayingFragment.newInstance())
         }
@@ -117,6 +117,7 @@ class MainActivityViewModel(
         val transportControls = mediaSessionConnection.transportControls
 
         val isPrepared = mediaSessionConnection.playbackState.value?.isPrepared ?: false
+        //如果媒體資源處於準備好的狀態，且當前點擊的媒體就是當前正在播放的資源
         if (isPrepared && mediaItem.mediaId == nowPlaying?.id) {
             mediaSessionConnection.playbackState.value?.let { playbackState ->
                 when {
@@ -132,8 +133,14 @@ class MainActivityViewModel(
                 }
             }
         } else {
+            //如果點擊的資源不是當前正在播放的資源，直接播放點擊的媒體資源
             transportControls.playFromMediaId(mediaItem.mediaId, null)
         }
+    }
+
+
+    fun setRepeatMode(repeatMode:Int){
+        mediaSessionConnection.transportControls.setRepeatMode(repeatMode)
     }
 
     fun playMediaId(mediaId: String) {

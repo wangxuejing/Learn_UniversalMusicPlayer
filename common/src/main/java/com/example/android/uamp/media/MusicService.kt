@@ -37,27 +37,14 @@ import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
 import androidx.media.MediaBrowserServiceCompat
 import com.example.android.uamp.media.extensions.flag
-import com.example.android.uamp.media.library.BrowseTree
-import com.example.android.uamp.media.library.JsonSource
-import com.example.android.uamp.media.library.MEDIA_SEARCH_SUPPORTED
-import com.example.android.uamp.media.library.MusicSource
-import com.example.android.uamp.media.library.UAMP_BROWSABLE_ROOT
-import com.example.android.uamp.media.library.UAMP_EMPTY_ROOT
-import com.google.android.exoplayer2.C
-import com.google.android.exoplayer2.ExoPlayer
-import com.google.android.exoplayer2.ExoPlayerFactory
-import com.google.android.exoplayer2.Player
-import com.google.android.exoplayer2.Timeline
+import com.example.android.uamp.media.library.*
+import com.google.android.exoplayer2.*
 import com.google.android.exoplayer2.audio.AudioAttributes
 import com.google.android.exoplayer2.ext.mediasession.MediaSessionConnector
 import com.google.android.exoplayer2.ext.mediasession.TimelineQueueNavigator
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory
 import com.google.android.exoplayer2.util.Util
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 
 /**
  * This class is the entry point for browsing and playback commands from the APP's UI
@@ -402,6 +389,14 @@ open class MusicService : MediaBrowserServiceCompat() {
                 }
             }
         }
+
+
+        //***** 可以 重写其他感兴趣的 回调
+        override fun onSessionReady() {
+
+        }
+
+
     }
 }
 

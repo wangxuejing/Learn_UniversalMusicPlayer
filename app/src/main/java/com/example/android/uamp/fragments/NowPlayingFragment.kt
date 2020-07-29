@@ -73,10 +73,17 @@ class NowPlayingFragment : Fragment() {
         nowPlayingViewModel.mediaPosition.observe(this,
                 Observer { pos -> positionTextView.text =
                         NowPlayingMetadata.timestampToMSS(context, pos) })
+        nowPlayingViewModel.repeatButtonRes.observe(this,
+                Observer { res -> view.findViewById<ImageView>(R.id.repeat_mode_button).setImageResource(res) })
 
         // Setup UI handlers for buttons
         view.findViewById<ImageButton>(R.id.media_button).setOnClickListener {
             nowPlayingViewModel.mediaMetadata.value?.let { mainActivityViewModel.playMediaId(it.id) } }
+
+        view.findViewById<ImageButton>(R.id.repeat_mode_button).setOnClickListener {
+             nowPlayingViewModel.repeatMode.value?.let { mainActivityViewModel.setRepeatMode((it+1)%3) }
+        }
+
 
         // Initialize playback duration and position to zero
         view.findViewById<TextView>(R.id.duration).text =

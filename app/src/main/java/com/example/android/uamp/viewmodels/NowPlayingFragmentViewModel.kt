@@ -80,10 +80,15 @@ class NowPlayingFragmentViewModel(
 
     private var playbackState: PlaybackStateCompat = EMPTY_PLAYBACK_STATE
     val mediaMetadata = MutableLiveData<NowPlayingMetadata>()
+    val repeatMode = MutableLiveData<Int>().apply { postValue(PlaybackStateCompat.REPEAT_MODE_NONE) }
     val mediaPosition = MutableLiveData<Long>().apply {
         postValue(0L)
     }
     val mediaButtonRes = MutableLiveData<Int>().apply {
+        postValue(com.example.android.uamp.R.drawable.ic_album_black_24dp)
+    }
+
+    val repeatButtonRes = MutableLiveData<Int>().apply {
         postValue(com.example.android.uamp.R.drawable.ic_album_black_24dp)
     }
 
@@ -100,6 +105,8 @@ class NowPlayingFragmentViewModel(
         val metadata = mediaSessionConnection.nowPlaying.value ?: NOTHING_PLAYING
         updateState(playbackState, metadata)
     }
+
+
 
     /**
      * When the session's [MediaMetadataCompat] changes, the [mediaItems] need to be updated
@@ -128,7 +135,23 @@ class NowPlayingFragmentViewModel(
     private val mediaSessionConnection = mediaSessionConnection.also {
         it.playbackState.observeForever(playbackStateObserver)
         it.nowPlaying.observeForever(mediaMetadataObserver)
+        it.repeatMode.observeForever { mode ->
+            updateRepeatModeButton(mode)
+        }
         checkPlaybackPosition()
+    }
+
+    private fun updateRepeatModeButton(mode: Int?) {
+
+        repeatMode.postValue(mode)
+        repeatButtonRes.postValue(
+                when (mode) {
+                    PlaybackStateCompat.REPEAT_MODE_ALL  -> R.drawable.ic_repeat_all_black_24dp
+                    PlaybackStateCompat.REPEAT_MODE_ONE  -> R.drawable.ic_repeat_one_black_24dp
+                    PlaybackStateCompat.REPEAT_MODE_NONE -> R.drawable.ic_repeat_none_black_24dp
+                    else -> R.drawable.ic_repeat_none_black_24dp
+                }
+        )
     }
 
     /**
