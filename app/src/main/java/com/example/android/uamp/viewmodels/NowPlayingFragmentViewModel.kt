@@ -136,7 +136,7 @@ class NowPlayingFragmentViewModel(
      * [MediaSessionConnection.nowPlaying] changes based on the item that's being played,
      * which can also change the [MediaItemData.playbackRes]s in the list.
      */
-     val mediaSessionConnection = mediaSessionConnection.also {
+    private val mediaSessionConnection = mediaSessionConnection.also {
         it.playbackState.observeForever(playbackStateObserver)
         it.nowPlaying.observeForever(mediaMetadataObserver)
         it.repeatMode.observeForever { mode ->
@@ -214,6 +214,14 @@ class NowPlayingFragmentViewModel(
                 else -> R.drawable.ic_play_arrow_black_24dp
             }
         )
+    }
+
+    fun skipNext() {
+        mediaSessionConnection.transportControls.skipToNext()
+    }
+
+    fun skipToPrevious() {
+        mediaSessionConnection.transportControls.skipToPrevious()
     }
 
     class Factory(

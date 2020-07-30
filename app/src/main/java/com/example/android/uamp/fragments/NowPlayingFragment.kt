@@ -45,7 +45,8 @@ class NowPlayingFragment : Fragment() {
     private lateinit var mainActivityViewModel: MainActivityViewModel
     private lateinit var nowPlayingViewModel: NowPlayingFragmentViewModel
     private lateinit var positionTextView: TextView
-    private  lateinit var  mSeekBar :SeekBar
+    private lateinit var mSeekBar: SeekBar
+
     companion object {
         fun newInstance() = NowPlayingFragment()
     }
@@ -78,7 +79,7 @@ class NowPlayingFragment : Fragment() {
                 Observer { pos ->
                     positionTextView.text =
                             NowPlayingMetadata.timestampToMSS(context, pos)
-                     updateProgress(pos)
+                    updateProgress(pos)
                 })
         nowPlayingViewModel.repeatButtonRes.observe(this,
                 Observer { res -> view.findViewById<ImageView>(R.id.repeat_mode_button).setImageResource(res) })
@@ -93,6 +94,14 @@ class NowPlayingFragment : Fragment() {
             nowPlayingViewModel.repeatMode.value?.let { mainActivityViewModel.setRepeatMode((it + 1) % 3) }
         }
 
+        view.findViewById<ImageButton>(R.id.next).setOnClickListener {
+            nowPlayingViewModel.skipNext()
+        }
+
+        view.findViewById<ImageButton>(R.id.previous).setOnClickListener {
+            nowPlayingViewModel.skipToPrevious()
+        }
+
         mSeekBar = view.findViewById<SeekBar>(R.id.seekBar)
                 .apply {
                     setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
@@ -103,9 +112,11 @@ class NowPlayingFragment : Fragment() {
                         }
 
                         override fun onStopTrackingTouch(seekBar: SeekBar?) {
-                            var duration = nowPlayingViewModel.mediaDuration.value?:0
-                            if (duration<=0){return}
-                            val position = seekBar?.progress?.times(duration/100)?:0
+                            var duration = nowPlayingViewModel.mediaDuration.value ?: 0
+                            if (duration <= 0) {
+                                return
+                            }
+                            val position = seekBar?.progress?.times(duration / 100) ?: 0
                             mainActivityViewModel.seekTo(position)
                         }
 
@@ -121,12 +132,14 @@ class NowPlayingFragment : Fragment() {
     }
 
     private fun updateProgress(pos: Long) {
-        var duration = nowPlayingViewModel.mediaDuration.value?:1
-        if (duration<=0){return}
-        val progress = (pos.times(100)/ duration).toInt()
+        var duration = nowPlayingViewModel.mediaDuration.value ?: 1
+        if (duration <= 0) {
+            return
+        }
+        val progress = (pos.times(100) / duration).toInt()
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            mSeekBar.setProgress(progress ,true)
-        }else{
+            mSeekBar.setProgress(progress, false)
+        } else {
             mSeekBar.progress = progress
         }
     }
