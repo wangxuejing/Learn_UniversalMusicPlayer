@@ -1,20 +1,4 @@
-/*
- * Copyright 2019 Google Inc. All rights reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
-package com.example.android.uamp.fragments
+package com.jiemo.player.main.nowplaying
 
 import android.net.Uri
 import android.os.Build
@@ -31,12 +15,9 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.bumptech.glide.Glide
 import com.example.android.uamp.R
-import com.example.android.uamp.media.extensions.duration
-import com.example.android.uamp.utils.InjectorUtils
-import com.example.android.uamp.viewmodels.MainActivityViewModel
-import com.example.android.uamp.viewmodels.NowPlayingFragmentViewModel
-import com.example.android.uamp.viewmodels.NowPlayingFragmentViewModel.NowPlayingMetadata
-import kotlinx.android.synthetic.main.fragment_nowplaying.*
+import com.jiemo.player.main.utils.InjectorUtils
+import com.jiemo.player.main.nowplaying.NowPlayingFragmentViewModel.NowPlayingMetadata
+import com.jiemo.player.main.MainActivityViewModel
 
 /**
  * A fragment representing the current media item being played.

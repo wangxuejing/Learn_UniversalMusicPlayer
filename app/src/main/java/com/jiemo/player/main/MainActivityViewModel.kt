@@ -1,20 +1,4 @@
-/*
- * Copyright 2018 Google Inc. All rights reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
-package com.example.android.uamp.viewmodels
+package com.jiemo.player.main
 
 import android.support.v4.media.MediaBrowserCompat
 import android.util.Log
@@ -25,15 +9,14 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.example.android.uamp.MainActivity
-import com.example.android.uamp.MediaItemData
 import com.example.android.uamp.common.MediaSessionConnection
-import com.example.android.uamp.fragments.NowPlayingFragment
 import com.example.android.uamp.media.extensions.id
 import com.example.android.uamp.media.extensions.isPlayEnabled
 import com.example.android.uamp.media.extensions.isPlaying
 import com.example.android.uamp.media.extensions.isPrepared
-import com.example.android.uamp.utils.Event
+import com.jiemo.player.main.items.MediaItemData
+import com.jiemo.player.main.nowplaying.NowPlayingFragment
+import com.jiemo.player.main.utils.Event
 
 /**
  * Small [ViewModel] that watches a [MediaSessionConnection] to become connected
@@ -126,7 +109,7 @@ class MainActivityViewModel(
                     playbackState.isPlayEnabled -> transportControls.play()
                     else -> {
                         Log.w(
-                            TAG, "Playable item clicked but neither play nor pause are enabled!" +
+                                TAG, "Playable item clicked but neither play nor pause are enabled!" +
                                     " (mediaId=${mediaItem.mediaId})"
                         )
                     }
@@ -155,7 +138,7 @@ class MainActivityViewModel(
                     playbackState.isPlayEnabled -> transportControls.play()
                     else -> {
                         Log.w(
-                            TAG, "Playable item clicked but neither play nor pause are enabled!" +
+                                TAG, "Playable item clicked but neither play nor pause are enabled!" +
                                     " (mediaId=$mediaId)"
                         )
                     }
